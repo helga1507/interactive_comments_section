@@ -9,5 +9,5 @@ export const theme = {
         lightGray: 'hsl(223, 19%, 93%)',
         veryLightGray: 'hsl(228, 33%, 97%)',
         white: 'hsl(0, 0%, 100%)',
-    }
+    },
 };

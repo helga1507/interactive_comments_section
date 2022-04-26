@@ -7,15 +7,15 @@ import { Comments } from '../Comments';
 import { Body } from './styled';
 
 export const App = () => {
-  const dispatch = useAppDispatch();
+    const dispatch = useAppDispatch();
 
-  useEffect(() => {
-      dispatch(fetchUserData());
-  }, [dispatch]);
+    useEffect(() => {
+        dispatch(fetchUserData());
+    }, [dispatch]);
 
-  return (
-    <Body>
-      <Comments/>
-    </Body>
-  );
-}
+    return (
+        <Body>
+            <Comments />
+        </Body>
+    );
+};

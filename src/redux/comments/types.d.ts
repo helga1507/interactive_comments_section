@@ -17,7 +17,7 @@ export interface ItemType {
     prevId: number | null;
     parentId: number | null;
     replies: number[];
-    user: UserType
+    user: UserType;
 }
 
 export interface DataType {

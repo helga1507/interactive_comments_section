@@ -23,9 +23,9 @@ export const Content = ({ isEditing, id, setIsEditing }: ContentProps) => {
         return (
             <Container>
                 {replyingTo && <ReplyName>@{replyingTo} &nbsp;</ReplyName>}
-                <span>{ content }</span>
+                <span>{content}</span>
             </Container>
-        )
+        );
     }
 
     const handleClickCancel = () => setIsEditing(false);
@@ -33,14 +33,18 @@ export const Content = ({ isEditing, id, setIsEditing }: ContentProps) => {
     const handleClickUpdate = () => {
         dispatch(updateComment({ id, content: text }));
         setIsEditing(false);
-    }
+    };
 
     return (
         <>
             <TextArea {...{ text, setText, replyingTo }} />
             <ButtonsContainer>
-                <Button variant="primary" actionType="destructive" onClick={handleClickCancel}> Cancel </Button>
-                <Button variant="primary" onClick={handleClickUpdate}> Update </Button>
+                <Button variant="primary" actionType="destructive" onClick={handleClickCancel}>
+                    Cancel
+                </Button>
+                <Button variant="primary" onClick={handleClickUpdate}>
+                    Update
+                </Button>
             </ButtonsContainer>
         </>
     );

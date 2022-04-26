@@ -28,9 +28,9 @@ export const Item = ({ id }: ItemProps) => {
                 <Score {...{ id }} />
                 <Main {...{ id, setReply }} />
             </Card>
-            <List ids={ replies } >
-                {isReply && <Answer id={id} replyingTo={ username } onClickCancel={ setReplyFalsy } />}
+            <List ids={replies}>
+                {isReply && <Answer id={id} replyingTo={username} onClickCancel={setReplyFalsy} />}
             </List>
         </>
-    )
+    );
 };

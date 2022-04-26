@@ -9,12 +9,8 @@ export const Edit = ({ setIsEditing }: EditProps) => {
     const handleClick = () => setIsEditing(true);
 
     return (
-        <Button
-            variant='secondary'
-            iconSrc={ iconEdit }
-            onClick={ handleClick }
-        >
-                Edit
+        <Button variant="secondary" iconSrc={iconEdit} onClick={handleClick}>
+            Edit
         </Button>
     );
 };

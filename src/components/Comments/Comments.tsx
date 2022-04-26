@@ -22,5 +22,5 @@ export const Comments = () => {
             <List ids={list} />
             <Answer />
         </Container>
-    )
+    );
 };

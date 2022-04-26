@@ -17,7 +17,7 @@ const getDataByType = (type: ScoreButtonProps['type']) => {
         iconUrl: type === 'plus' ? iconPlus : iconMinus,
         mark: type === 'plus' ? 1 : -1,
     };
-}
+};
 
 export const ScoreButton = ({ id, type, score }: ScoreButtonProps) => {
     const { iconUrl, mark } = getDataByType(type);
@@ -25,9 +25,13 @@ export const ScoreButton = ({ id, type, score }: ScoreButtonProps) => {
 
     const onClick = () => {
         const updatedScore = score + 1 * mark;
-        
+
         dispatch(updateItem({ id, score: updatedScore }));
     };
 
-    return <ScoreIcon onClick={onClick} > <img src={iconUrl} alt="logo" /></ScoreIcon>;
+    return (
+        <ScoreIcon onClick={onClick}>
+            <img src={iconUrl} alt="logo" />
+        </ScoreIcon>
+    );
 };

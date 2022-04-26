@@ -11,7 +11,7 @@ interface ScoreProps {
 
 export const Score = ({ id }: ScoreProps) => {
     const score = useSelector(getScoreById(id));
-    
+
     return (
         <Container>
             <ScoreButton id={id} type="plus" score={score} />

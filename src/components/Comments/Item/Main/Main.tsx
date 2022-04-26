@@ -28,27 +28,29 @@ export const Main = ({ id, setReply }: MainProps) => {
 
     const action = useMemo(() => {
         if (!isOwnerComment) {
-            return <Reply onClick={ setReply } />;
+            return <Reply onClick={setReply} />;
         }
 
         return (
             <div>
-                <Delete onClick={ handleDelete } />
-                <Edit setIsEditing={ setIsEditing } />
+                <Delete onClick={handleDelete} />
+                <Edit setIsEditing={setIsEditing} />
             </div>
         );
-    }, [ isOwnerComment, handleDelete, setIsEditing, setReply ]);
+    }, [isOwnerComment, handleDelete, setIsEditing, setReply]);
 
     return (
         <div>
             <Header>
-                <div><img src={ user.image.png } alt="avatar"/></div>
                 <div>
-                    <Name>{ user.username }</Name>
-                    { isOwnerComment && <OwnerLabel>you</OwnerLabel> }
-                    <Date>{ createdAt }</Date>
+                    <img src={user.image.png} alt="avatar" />
                 </div>
-                { action }
+                <div>
+                    <Name>{user.username}</Name>
+                    {isOwnerComment && <OwnerLabel>you</OwnerLabel>}
+                    <Date>{createdAt}</Date>
+                </div>
+                {action}
             </Header>
             <Content {...{ id, isEditing, setIsEditing }} />
         </div>

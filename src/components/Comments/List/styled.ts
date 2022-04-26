@@ -10,7 +10,7 @@ export const Ul = styled.ul`
         position: relative;
 
         &::before {
-            border-left: solid 2px ${({ theme }) => theme.colors.lightGray}; 
+            border-left: solid 2px ${({ theme }) => theme.colors.lightGray};
             content: '';
             display: block;
             height: 100%;

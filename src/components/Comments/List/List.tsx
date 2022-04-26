@@ -10,8 +10,10 @@ interface ListProps {
 export const List = ({ ids, children }: ListProps) => {
     return (
         <Ul>
-            { children }
-            { ids.map((id => <Item id={ id } key={ id } />)) }
+            {children}
+            {ids.map((id) => (
+                <Item id={id} key={id} />
+            ))}
         </Ul>
-    )
+    );
 };

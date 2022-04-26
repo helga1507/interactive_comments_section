@@ -14,5 +14,5 @@ export const getUserCommentById = (id: number) => createSelector(getCommentsStat
 
 export const getCreatedAtById = (id: number) => createSelector(getCommentsState, ({ data }) => data[id].createdAt);
 
-export const getContentById = (id: number) => 
+export const getContentById = (id: number) =>
     createSelector(getCommentsState, ({ data }) => ({ content: data[id].content, replyingTo: data[id].replyingTo }));

@@ -9,18 +9,16 @@ import reportWebVitals from './reportWebVitals';
 import { GlobalStyle } from './styles/globals';
 import { store } from './redux/store';
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-  <>
-    <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        <App />
-      </ThemeProvider>
-    </Provider>
-  </>
+    <>
+        <Provider store={store}>
+            <ThemeProvider theme={theme}>
+                <GlobalStyle />
+                <App />
+            </ThemeProvider>
+        </Provider>
+    </>,
 );
 
 // If you want to start measuring performance in your app, pass a function

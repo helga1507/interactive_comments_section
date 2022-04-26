@@ -11,6 +11,5 @@ const initialState: UserState = {
 };
 
 export const userReducer = createReducer(initialState, (builder) => {
-    builder
-        .addCase(fetchUserSuccess, (state, { payload }) => ({ ...state, ...payload }))
-})
+    builder.addCase(fetchUserSuccess, (state, { payload }) => ({ ...state, ...payload }));
+});

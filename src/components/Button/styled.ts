@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 interface ButtonProps {
     color: string;
-};
+}
 
 export const ButtonPrimary = styled.button<ButtonProps>`
     background-color: ${({ theme, color }) => theme.colors[color]};
