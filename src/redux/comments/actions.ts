@@ -3,21 +3,20 @@ import axios from 'axios';
 
 import { AppThunk } from '../store';
 
-import { ListType, DataType, ItemType } from './types';
+import { CommentType, ListComments } from './types';
 
 export const fetchRequest = createAction('COMMENTS/FETCH_REQUEST');
-export const fetchSuccess = createAction<{ data: DataType; list: ListType }>('COMMENTS/FETCH_SUCCESS');
-export const fetchFailure = createAction('COMMENTS/FETCH_FAILURE');
+export const fetchSuccess = createAction<ListComments>('COMMENTS/FETCH_SUCCESS');
+export const fetchFailure = createAction<any>('COMMENTS/FETCH_FAILURE');
 
 export const updateCommentRequest = createAction('COMMENTS/UPDATE_COMMENT_REQUEST');
-export const updateCommentSuccess = createAction<ItemType>('COMMENTS/UPDATE_COMMENT_SUCCESS');
+export const updateCommentSuccess = createAction<CommentType>('COMMENTS/UPDATE_COMMENT_SUCCESS');
 export const updateCommentFailure = createAction('COMMENTS/UPDATE_COMMENT_FAILURE');
 
-export const updateList = createAction<ListType>('COMMENTS/UPDATE_LIST');
-export const updateData = createAction<DataType>('COMMENTS/UPDATE_DATA');
-export const updateItem = createAction<{ id: number } & Partial<ItemType>>('COMMENTS/UPDATE_ITEM');
-
-const isNil = (val: any) => val === undefined || val === null;
+export const updateCommentsList = createAction<ListComments>('COMMENTS/UPDATE_COMMENTS');
+export const updateCommentContent = createAction<Pick<CommentType, 'id' | 'content'>>('COMMENTS/UPDATE_COMMENT_CONTENT');
+export const updateCommentScore = createAction<{ id: CommentType['id']; type: 'plus' | 'minus'}>('COMMENTS/UPDATE_COMMENT_SCORE');
+export const deleteComment = createAction<{ id: CommentType['id'] }>('COMMENTS/DELETE_COMMENT');
 
 export const fetchComments = (): AppThunk => async (dispatch) => {
     dispatch(fetchRequest());
@@ -27,96 +26,23 @@ export const fetchComments = (): AppThunk => async (dispatch) => {
 
         return dispatch(fetchSuccess(data));
     } catch (e) {
-        return dispatch(fetchFailure());
+        return dispatch(fetchFailure(e));
     }
 };
 
-export const updateComment =
-    (comment: { id: number; content: string }): AppThunk =>
-    async (dispatch) => {
-        dispatch(updateItem(comment));
+let nextId = 0;
+
+export const addComment = (content: string, replyId?: CommentType['id'], replyingTo = ''): AppThunk => async (dispatch, getState) => {
+    const { comments, user } = getState();
+    const comment: CommentType = {
+        content,
+        replyingTo, 
+        user,
+        id: `new${++nextId}`,
+        createdAt: 'now', 
+        parentId: replyId || null, 
+        score: 0,
     };
 
-export const deleteComment =
-    (id: number): AppThunk =>
-    async (dispatch, getState) => {
-        const { data, list } = getState().comments;
-        const { nextId, prevId, parentId, replies } = data[id];
-        const updatedData = { ...data };
-
-        if (!isNil(parentId)) {
-            updatedData[parentId] = {
-                ...updatedData[parentId],
-                replies: updatedData[parentId].replies.filter((item: number) => item !== id),
-            };
-        } else {
-            dispatch(updateList(list.filter((item) => item !== id)));
-        }
-
-        if (!isNil(prevId)) {
-            updatedData[prevId] = { ...updatedData[prevId], nextId: prevId };
-        }
-
-        if (!isNil(nextId)) {
-            updatedData[nextId] = { ...updatedData[nextId], prevId: nextId };
-        }
-
-        if (replies.length) {
-            replies.forEach((id: number) => delete updatedData[id]);
-        }
-
-        delete updatedData[id];
-
-        dispatch(updateData(updatedData));
-    };
-
-export const addComment =
-    (content: string, replyId?: number): AppThunk =>
-    async (dispatch, getState) => {
-        const {
-            comments: { data, list },
-            user,
-        } = getState();
-        const id = +Object.keys(data).slice(-1)[0] + 1;
-        const comment: ItemType = {
-            id,
-            content,
-            user,
-            createdAt: 'now',
-            replyingTo: '',
-            score: 0,
-            nextId: null,
-            prevId: null,
-            parentId: replyId ?? null,
-            replies: [],
-        };
-        const updatedData = { ...data, [id]: comment };
-
-        if (!replyId) {
-            comment.prevId = list.slice(-1)[0] ?? null;
-
-            dispatch(updateList([...list, id]));
-            dispatch(updateData(updatedData));
-
-            return;
-        }
-
-        const lastRepliedId = data[replyId].replies.slice(-1)[0];
-
-        comment.prevId = lastRepliedId ?? null;
-        comment.replyingTo = data[replyId].user.username;
-
-        updatedData[replyId] = {
-            ...updatedData[replyId],
-            replies: [...updatedData[replyId].replies, id],
-        };
-
-        if (!isNil(lastRepliedId)) {
-            updatedData[lastRepliedId] = {
-                ...updatedData[lastRepliedId],
-                nextId: id,
-            };
-        }
-
-        dispatch(updateData(updatedData));
-    };
+    return dispatch(updateCommentsList([ ...comments, comment]));
+};

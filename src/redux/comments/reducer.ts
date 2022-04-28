@@ -1,20 +1,17 @@
 import { createReducer } from '@reduxjs/toolkit';
 
-import { updateList, updateData, updateItem, fetchSuccess } from './actions';
-import { CommentsState } from './types';
+import { updateCommentsList, deleteComment, updateCommentScore, updateCommentContent, fetchSuccess } from './actions';
+import { ListComments } from './types';
 
-const initialState: CommentsState = {
-    list: [],
-    data: {},
-};
+const initialState: ListComments = [];
 
 export const commentsReducer = createReducer(initialState, (builder) => {
     builder
-        .addCase(updateList, (state, { payload }) => ({ ...state, list: payload }))
-        .addCase(updateData, (state, { payload }) => ({ ...state, data: payload }))
-        .addCase(updateItem, (state, { payload }) => ({
-            ...state,
-            data: { ...state.data, [payload.id]: { ...state.data[payload.id], ...payload } },
-        }))
-        .addCase(fetchSuccess, (state, { payload: { data, list } }) => ({ ...state, data, list }));
+        .addCase(fetchSuccess, (_, { payload }) => payload)
+        .addCase(updateCommentsList, (_, { payload }) => payload)
+        .addCase(updateCommentContent, (state, { payload }) => 
+            state.map(item => item.id === payload.id ? { ...item, ...payload } : item))
+        .addCase(updateCommentScore, (state, { payload: { id, type } }) => 
+            state.map(item => item.id === id ? { ...item, score: item.score + 1 * (type === 'minus' ? -1 : 1) } : item))
+        .addCase(deleteComment, (state, { payload }) => state.filter(item => item.id !== payload.id));
 });
