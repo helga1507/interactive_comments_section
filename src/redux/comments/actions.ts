@@ -15,8 +15,12 @@ export const updateCommentSuccess = createAction<CommentType>('COMMENTS/UPDATE_C
 export const updateCommentFailure = createAction('COMMENTS/UPDATE_COMMENT_FAILURE');
 
 export const updateCommentsList = createAction<ListComments>('COMMENTS/UPDATE_COMMENTS');
-export const updateCommentContent = createAction<Pick<CommentType, 'id' | 'content'>>('COMMENTS/UPDATE_COMMENT_CONTENT');
-export const updateCommentScore = createAction<{ id: CommentType['id']; type: 'plus' | 'minus'}>('COMMENTS/UPDATE_COMMENT_SCORE');
+export const updateCommentContent = createAction<Pick<CommentType, 'id' | 'content'>>(
+    'COMMENTS/UPDATE_COMMENT_CONTENT',
+);
+export const updateCommentScore = createAction<{ id: CommentType['id']; type: 'plus' | 'minus' }>(
+    'COMMENTS/UPDATE_COMMENT_SCORE',
+);
 export const deleteComment = createAction<{ id: CommentType['id'] }>('COMMENTS/DELETE_COMMENT');
 
 export const fetchComments = (): AppThunk => async (dispatch) => {
@@ -31,17 +35,19 @@ export const fetchComments = (): AppThunk => async (dispatch) => {
     }
 };
 
-export const addComment = (content: string, replyId: CommentType['parentId'] = null, replyingTo = ''): AppThunk => async (dispatch, getState) => {
-    const { comments, user } = getState();
-    const comment = {
-        content,
-        replyingTo, 
-        user,
-        id: uuidv4(),
-        createdAt: 'now', 
-        parentId: replyId, 
-        score: 0,
-    };
+export const addComment =
+    (content: string, replyId: CommentType['parentId'] = null, replyingTo = ''): AppThunk =>
+    async (dispatch, getState) => {
+        const { comments, user } = getState();
+        const comment = {
+            content,
+            replyingTo,
+            user,
+            id: uuidv4(),
+            createdAt: 'now',
+            parentId: replyId,
+            score: 0,
+        };
 
-    return dispatch(updateCommentsList([ ...comments, comment]));
-};
+        return dispatch(updateCommentsList([...comments, comment]));
+    };
