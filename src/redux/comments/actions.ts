@@ -1,5 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 
 import { AppThunk } from '../store';
 
@@ -30,17 +31,15 @@ export const fetchComments = (): AppThunk => async (dispatch) => {
     }
 };
 
-let nextId = 0;
-
-export const addComment = (content: string, replyId?: CommentType['id'], replyingTo = ''): AppThunk => async (dispatch, getState) => {
+export const addComment = (content: string, replyId: CommentType['parentId'] = null, replyingTo = ''): AppThunk => async (dispatch, getState) => {
     const { comments, user } = getState();
-    const comment: CommentType = {
+    const comment = {
         content,
         replyingTo, 
         user,
-        id: `new${++nextId}`,
+        id: uuidv4(),
         createdAt: 'now', 
-        parentId: replyId || null, 
+        parentId: replyId, 
         score: 0,
     };
 
